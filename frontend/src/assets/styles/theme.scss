@@ -1,0 +1,44 @@
+@use '@angular/material' as mat;
+
+$indigo-palette: (
+  50: #e1fdee,
+  100: #b7f8d4,
+  200: #7ff3b8,
+  300: #02ee98,
+  400: #00e77e,
+  500: #00df69,
+  600: #00ce5d,
+  700: #00ba4f,
+  800: #00a843,
+  900: #00862d,
+  contrast: (
+    50: #e1f8fd,
+    100: #b3eefa,
+    200: #80e3f7,
+    300: #47d7f3,
+    400: #02cfee,
+    500: #00c6ea,
+    600: #00b5d6,
+    700: #00a0ba,
+    800: #008ca1,
+    900: #006974,
+  )
+);
+
+$my-primary: mat.define-palette($indigo-palette, 500, 200, 800, 300);
+$my-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The "warn" palette is optional and defaults to red if not specified.
+$my-warn: mat.define-palette(mat.$red-palette);
+
+$light-theme: mat.define-light-theme((
+  color: (
+    primary: $my-primary,
+    accent: $my-accent,
+    warn: $my-warn,
+  ),
+  typography: mat.define-typography-config(),
+  density: 0,
+));
+
+@include mat.all-component-themes($light-theme);

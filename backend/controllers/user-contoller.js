@@ -1,0 +1,74 @@
+const { User } = require('../models');
+
+class UserController {
+  async getAllUsers(req, res) {
+    try {
+      const users = await User.findAll();
+      return res.json(users);
+    } catch (error) {
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
+  async getUserById(req, res) {
+    const { userId } = req.params;
+    try {
+      const user = await User.findByPk(userId);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      return res.json(user);
+    } catch (error) {
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
+  async createUser(req, res) {
+    const { name, lastName, age, height, weight } = req.body;
+
+    try {
+      const newUser = await User.create({ name, lastName, age, height, weight });
+      return res.status(201).json(newUser);
+    } catch (error) {
+      return res.status(400).json({ error: 'Bad Request' });
+    }
+  }
+
+  async updateUser(req, res) {
+    const { id } = req.params;
+    const { name, lastName, age, height, weight } = req.body;
+
+    try {
+      const [rowsUpdated, [updatedUser]] = await User.update(
+        { name, lastName, age, height, weight },
+        { returning: true, where: { id: id } }
+      );
+
+      if (rowsUpdated === 0) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      return res.json(updatedUser);
+    } catch (error) {
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
+  async deleteUser(req, res) {
+    const { id } = req.params;
+
+    try {
+      const deletedRowCount = await User.destroy({ where: { id: id } });
+
+      if (deletedRowCount === 0) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      return res.json({ message: 'User deleted successfully' });
+    } catch (error) {
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+}
+
+module.exports = new UserController();
