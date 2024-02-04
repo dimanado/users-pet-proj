@@ -32,7 +32,7 @@ export const userReducer = createReducer(
       userList: state.userList.filter((user) => user.id !== id),
     };
   }),
-  on(UserActions.addUser, (state, { user }) => {
+  on(UserActions.addUserSuccess, (state, { user }) => {
     return {
       ...state,
       userList: [user, ...state.userList],

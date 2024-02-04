@@ -11,3 +11,5 @@ export const deleteUser = createAction('[User] DeleteUser', props<{ user: User }
 export const deleteUserSuccess = createAction('[User] DeleteUser Success', props<{ id: string }>());
 export const deleteUserError = createAction('[User] DeleteUser Error');
 export const addUser = createAction('[User] AddUser', props<{ user: User }>());
+export const addUserSuccess = createAction('[User] AddUser Success', props<{ user: User }>());
+export const addUserError = createAction('[User] AddUser Error');

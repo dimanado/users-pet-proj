@@ -1,29 +1,35 @@
-const { v4: uuidv4 } = require('uuid');
-
 'use strict';
+
+const { faker } = require('@faker-js/faker');
+
+const { User, UserCredential } = require('../models');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const demoUsers = [];
-
-    // Generate 30 demo users
-    for (let i = 1; i <= 30; i++) {
-      demoUsers.push({
-        id: uuidv4(),
-        name: `User${i}`,
-        lastName: `Doe${i}`,
-        age: Math.floor(Math.random() * 10) + 20, // Random age between 20 and 29
-        height: Math.random() * (190 - 150) + 150, // Random height between 150 and 190
-        weight: Math.random() * (100 - 50) + 50, // Random weight between 50 and 100
+    for (let i= 1 ; i <= 100 ; i++) {
+      const name = faker.person.firstName();
+      const lastName = faker.person.lastName();
+      const user = {
+        name,
+        lastName,
+        age: faker.number.int({min: 18, max: 65}),
+        height: faker.number.float({min: 1.5, max: 2.0, precision: 0.01}),
+        weight: faker.number.float({min: 50, max: 100, precision: 0.01}),
         createdAt: new Date(),
         updatedAt: new Date(),
+        UserCredential: {
+          email: faker.internet.email({firstName: name, lastName: lastName}),
+          password: '1234567890',
+        }
+      };
+      await User.create(user, {
+        include: UserCredential
       });
     }
-
-    await queryInterface.bulkInsert('Users', demoUsers, {});
   },
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.bulkDelete('Users', null, {});
-  },
+    await queryInterface.bulkDelete('UserCredentials', null, {});
+  }
 };

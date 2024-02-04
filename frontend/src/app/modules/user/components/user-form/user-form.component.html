@@ -52,8 +52,9 @@
         mat-raised-button
         color="primary"
         type="submit"
-        (click)="onSubmit()"
+        data-qa="submit"
         [disabled]="userForm.invalid"
+        (click)="onSubmit()"
       >
         Submit
       </button>

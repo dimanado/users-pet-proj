@@ -1,0 +1,20 @@
+[
+  {
+    "id": "968ec849-5f98-40bb-ab3b-fcacf554bf16",
+    "name": "1",
+    "lastName": "1",
+    "age": 1,
+    "height": 1,
+    "createdAt": "2023-12-10T14:00:07.056Z",
+    "updatedAt": "2023-12-10T14:00:07.056Z"
+  },
+  {
+    "id": "29dc67ed-b84c-41a7-90d6-bd7b90b7a10c",
+    "name": "2",
+    "lastName": "Doe30",
+    "age": 28,
+    "height": 184.41083587862835,
+    "createdAt": "2023-11-28T16:31:28.573Z",
+    "updatedAt": "2023-11-28T16:31:28.573Z"
+  }
+]

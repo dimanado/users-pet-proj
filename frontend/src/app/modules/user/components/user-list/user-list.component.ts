@@ -51,7 +51,6 @@ export class UserListComponent implements OnInit{
     });
 
     const newUser: User = await firstValueFrom(ref.afterClosed());
-
     if (newUser) {
       this.store.dispatch(UserActions.addUser({ user: newUser }));
     }

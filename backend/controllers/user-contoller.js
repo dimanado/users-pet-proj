@@ -1,9 +1,15 @@
-const { User } = require('../models');
+const { User, UserCredential } = require('../models');
+const {faker} = require('@faker-js/faker');
 
 class UserController {
   async getAllUsers(req, res) {
     try {
-      const users = await User.findAll();
+      const users = await User.findAll({
+        order: [
+          ['updatedAt', 'DESC'],
+        ],
+        include: UserCredential,
+      });
       return res.json(users);
     } catch (error) {
       return res.status(500).json({ error: 'Internal Server Error' });
@@ -27,9 +33,34 @@ class UserController {
     const { name, lastName, age, height, weight } = req.body;
 
     try {
-      const newUser = await User.create({ name, lastName, age, height, weight });
-      return res.status(201).json(newUser);
+      // const newUser = await User.create({
+      //   name, lastName, age, height, weight,
+      //   userCredentials: {
+      //     email: 'daia@gmail.com',
+      //     password: '1234567890',
+      //     createdAt: new Date(),
+      //     updatedAt: new Date()
+      //   }
+      // }, {
+      //   include: [ UserCredentials ]
+      // });
+      // console.log(console.log(Object.getOwnPropertyNames(newUser)), 'test');
+      // const test = newUser.createUserCredentials({
+      //   email: 'daia@gmail.com',
+      //   password: '1234567890',
+      //   createdAt: new Date(),
+      //   updatedAt: new Date()
+      // });
+      // console.log(test, 'createUserCredentials');
+
+      const userCredentials = UserCredentials.create({
+        email: 'daia@gmail.com',
+        password: '1234567890',
+        UserId: 'd6ebeafc-0fb0-49e3-b0c4-b4672f94a4bb'
+      }, { association: UserCredentials.User, })
+      return res.status(201).json(userCredentials);
     } catch (error) {
+      console.log(error, 'error');
       return res.status(400).json({ error: 'Bad Request' });
     }
   }

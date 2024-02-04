@@ -2,28 +2,30 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('UserCredentials', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
       },
-      name: {
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      password: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      lastName: {
-        type: Sequelize.STRING,
+      UserId: {
+        type: Sequelize.UUID,
         allowNull: false,
-      },
-      age: {
-        type: Sequelize.INTEGER,
-      },
-      height: {
-        type: Sequelize.FLOAT,
-      },
-      weight: {
-        type: Sequelize.FLOAT,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       createdAt: {
         allowNull: false,
@@ -35,8 +37,7 @@ module.exports = {
       },
     });
   },
-
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('UserCredentials');
   },
 };
