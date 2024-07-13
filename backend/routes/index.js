@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.json({ info: 'Node.js, Express, and Postgres API' })
-});
+const LoginController = require('../controllers/login-controller');
+
+router.post('/login', passport.authenticate('local'), LoginController.login);
 
 module.exports = router;

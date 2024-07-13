@@ -1,5 +1,4 @@
 const { User, UserCredential } = require('../models');
-const {faker} = require('@faker-js/faker');
 
 class UserController {
   async getAllUsers(req, res) {

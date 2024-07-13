@@ -31,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
+  UserCredential.prototype.validatePassword = function (password) {
+    return bcrypt.compareSync(password, this.password);
+  }
+
   UserCredential.associate = (models) => {
     UserCredential.belongsTo(models.User, { foreignKey: 'UserId' });
   };
