@@ -27,10 +27,8 @@ passport.serializeUser((user, cb) => {
 });
 
 passport.deserializeUser((userId, cb) => {
-    console.log('deserializeUser', userId);
     UserCredential.findByPk(userId)
         .then((userCredential) => {
-            console.log('deserializeUser 2', userCredential);
             cb(null, userCredential);
         })
         .catch(error => cb(error));
