@@ -1,8 +1,13 @@
+const { User } = require('../models');
+
 class LoginController {
     async login(req, res) {
-        req.session.views = 1;
-        console.log('session', req.session);
-        res.json({ message: 'User login successfully' });
+        const { id, name, lastName } = await User.findByPk(req.user.UserId);
+        res.json({ id, name, lastName });
+    }
+
+    logout(req, res) {
+        req.logout(() => res.json({ message: 'Logged out' }));
     }
 }
 

@@ -11,10 +11,8 @@ const strategy = new LocalStrategy(customFields, (username, password, cb) => {
     UserCredential.findOne({ where: { email: username } })
         .then((userCredential) => {
             if (!userCredential || !userCredential.validatePassword(password)) {
-                console.log('test1');
                 return cb(null, false);
             }
-            console.log('test2');
             return cb(null, userCredential);
         })
         .catch(cb);

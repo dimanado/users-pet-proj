@@ -3,6 +3,7 @@ const { User, UserCredential } = require('../models');
 class UserController {
   async getAllUsers(req, res) {
     try {
+      console.log(req.user, 'req.user 11111111111111111 111111111111111111111111');
       const users = await User.findAll({
         order: [
           ['updatedAt', 'DESC'],

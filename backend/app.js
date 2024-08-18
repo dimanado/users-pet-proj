@@ -9,7 +9,7 @@ const passport = require('passport');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
-const indexRouter = require('./routes/index');
+const authRouter = require('./routes/auth');
 const usersRouter = require('./routes/user');
 const { sequelize } = require('./models');
 const { isAuth } = require('./routes/authMiddleware');
@@ -50,7 +50,7 @@ require('./config/password');
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', indexRouter);
+app.use('/', authRouter);
 app.use('/users', isAuth, usersRouter);
 
 // catch 404 and forward to error handler
