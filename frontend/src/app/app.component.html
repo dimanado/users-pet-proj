@@ -1,9 +1,23 @@
-<div qa-data="header">
-  Header
+<header class="header">
+  @if (user$ | async; as user) {
+    <div>
+      <h1>
+        Header
+      </h1>
 
-  <a [routerLink]="['/users']">
-    Users list
-  </a>
-</div>
+      <a [routerLink]="['/users']">
+        Users list
+      </a>
+    </div>
+
+    <div>
+      <span>{{ user.fullName }}</span>
+
+      <button (click)="logout()">
+        Logout
+      </button>
+    </div>
+  }
+</header>
 
 <router-outlet></router-outlet>

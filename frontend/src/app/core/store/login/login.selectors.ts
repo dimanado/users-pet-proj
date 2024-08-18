@@ -10,3 +10,10 @@ export const selectIsLoginValid = createSelector(
     return state.isLoginValid;
   }
 );
+
+export const selectAuthUser = createSelector(
+  selectLoginState,
+  (state) => {
+    return state.user;
+  }
+);

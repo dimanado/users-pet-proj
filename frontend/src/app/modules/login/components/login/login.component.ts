@@ -6,6 +6,7 @@ import { Observable, tap } from 'rxjs';
 import { LoginStore } from '@app/core/store/login/login.reducer';
 import * as LoginActions from '@app/core/store/login/login.actions';
 import { selectIsLoginValid } from '@app/core/store/login/login.selectors';
+import { removeError } from '@app/core/utils/from';
 
 @Component({
   selector: 'app-login',
@@ -18,14 +19,24 @@ export class LoginComponent {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
   });
+
   isLoginValid$: Observable<boolean> = this.store.select(selectIsLoginValid)
     .pipe(
       tap((isLoginValid) => {
+        console.log('isLoginValid', isLoginValid);
         if (!isLoginValid) {
           this.loginForm.get('email')?.setErrors({ invalidLogin: true });
         }
       })
     );
+
+  changeFormValue$: Observable<unknown> = this.loginForm.valueChanges
+    .pipe(
+      tap((value) => {
+        removeError(this.loginForm.get('email') as FormControl, 'invalidLogin');
+      }
+    )
+  );
 
   constructor(
     private store: Store<{ login: LoginStore }>,

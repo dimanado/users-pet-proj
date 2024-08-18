@@ -5,5 +5,6 @@ const passport = require('passport');
 const LoginController = require('../controllers/login-controller');
 
 router.post('/login', passport.authenticate('local'), LoginController.login);
+router.post('/logout', LoginController.logout);
 
 module.exports = router;

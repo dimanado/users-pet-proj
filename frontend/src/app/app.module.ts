@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { StoreModule } from '@ngrx/store';
+import { Store, StoreModule } from '@ngrx/store';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
@@ -14,6 +14,7 @@ import { LoginEffects } from '@app/core/store/login/login.effects';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { httpInterceptor } from '@app/core/interceptor/http-interceptor.interceptor';
+import * as baseActions from '@app/core/store/base/base.actions';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,14 @@ import { httpInterceptor } from '@app/core/interceptor/http-interceptor.intercep
     provideHttpClient(
       withInterceptors([httpInterceptor]),
     ),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (store: Store) => {
+        return () => store.dispatch(baseActions.init());
+      },
+      multi: true,
+      deps: [Store]
+    }
   ],
   bootstrap: [AppComponent]
 })

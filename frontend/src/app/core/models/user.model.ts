@@ -21,3 +21,21 @@ export class User {
     return `${this.lastName} ${this.name}`
   }
 }
+
+export class AuthUser {
+  public id: string;
+  public name: string;
+  public lastName: string;
+
+  constructor(
+    data: Partial<AuthUser>
+  ) {
+    this.id = data.id || '';
+    this.name = data.name || '';
+    this.lastName = data.lastName || '';
+  }
+
+  get fullName(): string {
+    return `${this.lastName} ${this.name}`
+  }
+}
