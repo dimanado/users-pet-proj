@@ -17,6 +17,16 @@
         Logout
       </button>
     </div>
+  } @else {
+    <div>
+      <h1>
+        Header
+      </h1>
+
+      <a [routerLink]="['/login']">
+        Login
+      </a>
+    </div>
   }
 </header>
 
