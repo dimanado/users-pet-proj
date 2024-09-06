@@ -9,3 +9,17 @@ export const selectUsers = createSelector(
     return state.userList;
   }
 );
+
+export const selectUsersTotal = createSelector(
+  selectUserState,
+  (state) => {
+    return state.total;
+  }
+);
+
+export const selectPage = createSelector(
+  selectUserState,
+  (state) => {
+    return state.page;
+  }
+);

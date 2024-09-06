@@ -1,8 +1,9 @@
 import { createAction, props } from '@ngrx/store';
 import { User } from '../../models/user.model';
+import { ListWithPaginationModel } from '@app/core/models/listWithPagination.model';
 
-export const getUsers = createAction('[User] GetUsers');
-export const getUsersSuccess = createAction('[User] GetUsers Success', props<{ users: User[] }>());
+export const getUsers = createAction('[User] GetUsers', props<{ page?: number }>());
+export const getUsersSuccess = createAction('[User] GetUsers Success', props<{ listWithPagination: ListWithPaginationModel<User> }>());
 export const getUsersError = createAction('[User] GetUsers Error');
 export const updateUser = createAction('[User] UpdateUser', props<{ user: User }>());
 export const updateUserSuccess = createAction('[User] UpdateUser Success', props<{ user: User }>());

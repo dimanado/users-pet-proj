@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { User } from '../models/user.model';
 import { environment } from '@env/environment';
+import { ListWithPaginationModel } from '@app/core/models/listWithPagination.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +14,15 @@ export class UserService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getUsers(): Observable<User[]> {
-    return this.httpClient.request<User[]>(
+  getUsers(page = 1): Observable<ListWithPaginationModel<User>> {
+    return this.httpClient.request<ListWithPaginationModel<User>>(
       'GET',
-      `${environment.backendApi}/users`
+      `${environment.backendApi}/users`,
+      { params: { page: page.toString() } }
     ).pipe(
-      map((user) => user.map((item) => new User(item)))
+      map(({ list, total }) => {
+        return { total, list: list.map((item) => new User(item)) };
+      })
     );
   }
 

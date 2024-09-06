@@ -1,15 +1,22 @@
 const { User, UserCredential } = require('../models');
+const getPaginationParams = require('../utils/pagination-utils');
 
 class UserController {
   async getAllUsers(req, res) {
     try {
+      const { limit, offset } = getPaginationParams(req.query);
+
       const users = await User.findAll({
         order: [
           ['updatedAt', 'DESC'],
         ],
         include: UserCredential,
+        limit: limit,
+        offset: offset,
       });
-      return res.json(users);
+      const total = await User.count();
+
+      return res.json( { list: users, total } );
     } catch (error) {
       return res.status(500).json({ error: 'Internal Server Error' });
     }

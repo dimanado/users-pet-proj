@@ -1,21 +1,26 @@
 import { createReducer, on } from '@ngrx/store';
 import * as UserActions from './user.actions';
 import { User } from '../../models/user.model';
-import { updateUser } from './user.actions';
 
 export interface UserStore {
   userList: User[],
+  total: number,
+  page: number,
 }
 export const initialState: UserStore = {
   userList: [],
+  total: 0,
+  page: 0,
 };
 
 export const userReducer = createReducer(
   initialState,
-  on(UserActions.getUsersSuccess, (state, { users }) => {
+  on(UserActions.getUsersSuccess, (state, { listWithPagination }) => {
     return {
       ...state,
-      userList: users,
+      userList: listWithPagination.list,
+      total: listWithPagination.total,
+      page: state.page + 1,
     };
   }),
   on(UserActions.updateUserSuccess, (state, { user }) => {

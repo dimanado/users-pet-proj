@@ -6,15 +6,16 @@ import { map, mergeMap } from 'rxjs/operators';
 import * as UserActions from './user.actions';
 import { User } from '@app/core/models/user.model';
 import { UserService } from '@app/core/services/user.service';
+import { ListWithPaginationModel } from '@app/core/models/listWithPagination.model';
 
 @Injectable()
 export class UserEffects {
   users$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserActions.getUsers),
-      mergeMap(() => this.userService.getUsers()
+      mergeMap(({ page }) => this.userService.getUsers(page)
         .pipe(
-          map((users: User[]) => ({ type: UserActions.getUsersSuccess.type, users: users })),
+          map((listWithPagination: ListWithPaginationModel<User>) => ({ type: UserActions.getUsersSuccess.type, listWithPagination })),
           catchError(() => of({ type: UserActions.getUsersError.type }))
         ))
     )

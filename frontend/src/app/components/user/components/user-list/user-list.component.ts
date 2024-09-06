@@ -2,16 +2,19 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MatDialog } from '@angular/material/dialog';
 import { firstValueFrom, Observable } from 'rxjs';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { AsyncPipe } from '@angular/common';
 
 import * as UserActions from '@app/core/store/user/user.actions';
 import { UserStore } from '@app/core/store/user/user.reducer';
 import { User } from '@app/core/models/user.model';
-import { selectUsers } from '@app/core/store/user/user.selectors';
+import { selectUsers, selectUsersTotal } from '@app/core/store/user/user.selectors';
 import { UserFormComponent } from '@app/components/user/components/user-form/user-form.component';
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
-import { MatIconButton, MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { AsyncPipe } from '@angular/common';
+import { PageEvent } from '@angular/material/paginator';
+import { PAGINATION } from '@app/core/constants/pagination';
 
 @Component({
     selector: 'app-user-list',
@@ -20,25 +23,29 @@ import { AsyncPipe } from '@angular/common';
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
-        MatTable,
-        MatColumnDef,
-        MatHeaderCellDef,
-        MatHeaderCell,
-        MatCellDef,
-        MatCell,
-        MatIconButton,
-        MatIcon,
-        MatHeaderRowDef,
-        MatHeaderRow,
-        MatRowDef,
-        MatRow,
-        MatButton,
-        AsyncPipe,
+      MatPaginatorModule,
+      MatTable,
+      MatColumnDef,
+      MatHeaderCellDef,
+      MatHeaderCell,
+      MatCellDef,
+      MatCell,
+      MatIconButton,
+      MatIcon,
+      MatHeaderRowDef,
+      MatHeaderRow,
+      MatRowDef,
+      MatRow,
+      MatButton,
+      AsyncPipe,
     ],
 })
 export class UserListComponent implements OnInit{
   displayedColumns: string[] = ['name', 'lastName', 'age', 'height', 'weight', 'edit', 'delete'];
   users$: Observable<User[]> = this.store.select(selectUsers);
+  usersTotal$: Observable<number> = this.store.select(selectUsersTotal);
+
+  PAGINATION = PAGINATION;
 
   constructor(
     private store: Store<{ user: UserStore }>,
@@ -47,7 +54,7 @@ export class UserListComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.store.dispatch(UserActions.getUsers());
+    this.store.dispatch(UserActions.getUsers({ page: 1 }));
   }
 
   async onEditUser(user: User): Promise<void> {
@@ -75,5 +82,9 @@ export class UserListComponent implements OnInit{
     if (newUser) {
       this.store.dispatch(UserActions.addUser({ user: newUser }));
     }
+  }
+
+  handlePage(event: PageEvent) {
+    this.store.dispatch(UserActions.getUsers({ page: event.pageIndex + 1 }));
   }
 }
