@@ -15,8 +15,11 @@ export class LoginEffects {
     this.actions$.pipe(
       ofType(baseActions.init),
       map(() => {
-        const user = JSON.parse(localStorage.getItem('user')!);
-        return { type: LoginActions.loginSuccess.type, user };
+        if (typeof window !== 'undefined' && window.localStorage) {
+          const user = JSON.parse(localStorage.getItem('user')!);
+          return { type: LoginActions.loginSuccess.type, user };
+        }
+        return { type: baseActions.initError.type };
       })
     )
   );

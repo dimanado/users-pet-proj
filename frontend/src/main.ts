@@ -2,7 +2,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { httpInterceptor } from '@app/core/interceptor/http-interceptor.interceptor';
 import { APP_INITIALIZER, importProvidersFrom } from '@angular/core';
 import { Store, StoreModule } from '@ngrx/store';
-import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
+import { BrowserModule, bootstrapApplication, provideClientHydration } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, RouterModule } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
@@ -33,7 +33,7 @@ bootstrapApplication(AppComponent, {
             deps: [Store]
         },
         provideAnimations(),
-        provideRouter(appRoutes)
+        provideRouter(appRoutes), provideClientHydration()
     ]
 })
   .catch(err => console.error(err));
